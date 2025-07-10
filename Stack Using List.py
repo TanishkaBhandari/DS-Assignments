@@ -21,6 +21,7 @@ def pop(stack):
     else:
         num = stack.pop()
         print("Popped value:", num)
+        top-=1
 
 
 def peek(stack):
