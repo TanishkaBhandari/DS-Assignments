@@ -1,0 +1,106 @@
+CREATE TABLE marks (
+    student_id INT,
+    subject VARCHAR(50),
+    marks INT
+);
+INSERT INTO marks (student_id, subject, marks) VALUES
+(1, 'Math', 85),
+(1, 'Physics', 78),
+(2, 'Math', 90),
+(4, 'Physics', 88),
+(5, 'Biology', 70);
+
+SELECT s.id, s.name, m.subject, m.marks
+FROM student_info s
+JOIN marks m ON s.id = m.student_id;
+
+SELECT student_id, AVG(marks) AS avg_marks
+FROM marks
+GROUP BY student_id;
+
+SELECT student_id, SUM(marks) AS total_marks
+FROM marks
+GROUP BY student_id;
+
+SELECT student_id, SUM(marks) AS total_marks
+FROM marks
+GROUP BY student_id
+HAVING total_marks > 200;
+
+SELECT age, COUNT(*) AS count
+FROM student_info
+GROUP BY age
+HAVING count > 1;
+
+SELECT s.name, m.subject, m.marks
+FROM student_info s
+INNER JOIN marks m ON s.id = m.student_id;
+
+SELECT s.name, m.subject, m.marks
+FROM student_info s
+LEFT JOIN marks m ON s.id = m.student_id;
+
+SELECT s.name, m.subject, m.marks
+FROM student_info s
+RIGHT JOIN marks m ON s.id = m.student_id;
+
+CREATE TABLE departments (
+    dept_id INT AUTO_INCREMENT PRIMARY KEY,
+    dept_name VARCHAR(50)
+);
+
+CREATE TABLE student_courses (
+    student_id INT,
+    course_id INT,
+    FOREIGN KEY (student_id) REFERENCES student_info(id),
+    FOREIGN KEY (course_id) REFERENCES courses(course_id)
+);
+
+SELECT * FROM marks
+WHERE marks = (SELECT MAX(marks) FROM marks);
+
+CREATE VIEW student_totals AS
+SELECT s.name, SUM(m.marks) AS total_marks
+FROM student_info s
+JOIN marks m ON s.id = m.student_id
+GROUP BY s.id;
+
+CREATE PROCEDURE AddStudent(
+    IN p_name VARCHAR(50),
+    IN p_age INT,
+    IN p_department VARCHAR(50),
+    IN p_email VARCHAR(100)
+)
+
+
+CREATE PROCEDURE UpdateDepartment(
+    IN p_id INT,
+    IN p_new_dept VARCHAR(50)
+)
+
+
+CREATE TRIGGER log_insert_student
+AFTER INSERT ON student_info
+FOR EACH ROW
+BEGIN
+    INSERT INTO student_log (student_id) VALUES (NEW.id);
+END //
+
+
+UPDATE student_info SET department = 'Engineering' WHERE id = 1;
+
+UPDATE student_info SET department = 'Science' WHERE id = 2;
+
+COMMIT;
+SELECT name, age, department, COUNT(*) AS count
+FROM student_info
+GROUP BY name, age, department
+HAVING count > 1;
+
+CREATE INDEX idx_name ON student_info(name);
+
+SELECT MAX(marks) AS second_highest
+FROM marks
+WHERE marks < (SELECT MAX(marks) FROM marks);
+
+DROP TABLE courses;
